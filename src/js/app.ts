@@ -28,6 +28,7 @@ class App {
    * @param   {number} squareSize
    * @param   {number} radiusSpacing
    * @param   {number} squareSpacing
+   * @param   {number} offset
    * @returns {void}
    */
   #draw(
@@ -35,14 +36,15 @@ class App {
     squareSize: number = 20,
     radiusSpacing: number = 25,
     squareSpacing: number = 15,
+    offset: number = 0.3,
   ): void {
     for (let i = 0; i < circleCount; i++) {
       const totalSquareSize = squareSize + squareSpacing
       const radius = (squareSize + radiusSpacing) * (i + 1)
       const circleLength = 2 * Math.PI * radius
       const squareCount = Math.floor(circleLength / totalSquareSize)
-      const rotation = Math.PI * 0.1 * (-1) ** (i % 2)
-      this.#drawCircleOfSquares(radius, squareCount, squareSize, rotation)
+      offset = offset * (-1) ** (i % 2)
+      this.#drawCircleOfSquares(radius, squareCount, squareSize, offset)
     }
   }
 
@@ -52,14 +54,14 @@ class App {
    * @param   {number} radius
    * @param   {number} squareCount
    * @param   {number} squareSize
-   * @param   {number} rotation
+   * @param   {number} offset
    * @returns {void}
    */
   #drawCircleOfSquares(
     radius: number = 100,
     squareCount: number = 10,
     squareSize: number = 20,
-    rotation: number = Math.PI * 0.1,
+    offset: number = 0.3,
   ): void {
     this.#context.save()
     this.#context.translate(this.#canvas.width / 2, this.#canvas.height / 2)
@@ -75,7 +77,7 @@ class App {
       if (index % 2) {
         color = '#000000'
       }
-      this.#drawSquare(x, y, color, rotation, squareSize)
+      this.#drawSquare(x, y, color, angle + offset, squareSize)
       index++
     }
     this.#context.restore()
@@ -106,7 +108,7 @@ class App {
     this.#context.lineWidth = lineWidth
     this.#context.translate(x, y)
     this.#context.rotate(rotation)
-    this.#context.rect(0, 0, size, size)
+    this.#context.rect(-size / 2, -size / 2, size, size)
     this.#context.stroke()
     this.#context.restore()
   }
@@ -120,7 +122,7 @@ class App {
     this.#canvas = document.createElement('canvas')
     this.#context = this.#canvas.getContext('2d', {
       willReadFrequently: true,
-    })
+    }) as CanvasRenderingContext2D
 
     this.#canvas.width = window.innerWidth
     this.#canvas.height = window.innerHeight
