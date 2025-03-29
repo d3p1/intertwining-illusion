@@ -1,0 +1,13 @@
+/**
+ * @description Styles
+ * @author      C. M. de Picciotto <d3p1@d3p1.dev> (https://d3p1.dev/)
+ */
+:root {
+    --primary-color: hsl(0, 0%, 40%);
+}
+
+body {
+    margin: 0;
+    overflow: hidden;
+    background-color: var(--primary-color);
+}
